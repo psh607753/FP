@@ -9,11 +9,11 @@
 import Foundation
 
 let answer = 50//Int(arc4random() % 100) + 1
-var count = 0
+
 
 
 //1. 먼저 루프 제거
-
+//while -> func 로 변경
 
 func inputAndCheck() -> Bool{
 
@@ -25,7 +25,7 @@ func inputAndCheck() -> Bool{
     }
 
     if inputNumber == answer {
-        print("Correct! : \(count)")
+//        print("Correct! : \(count)")
         return false
     }
 
@@ -41,15 +41,67 @@ func inputAndCheck() -> Bool{
 }
 
 
-func countingLoop(needContinue: () -> Bool){
-    
-    var count = 0
-    while true {
-        if !needContinue() { break }
-        count += 1
-    }
-    
+func corrected(_ count:Int) -> Void{
+    print("count = \(count)")
 }
 
-countingLoop(needContinue: inputAndCheck)
 
+// needContinue : 함수
+// finished : 함수
+
+func countingLoop(_ needContinue: () -> Bool, _ finished : (Int) -> Void){
+
+    func counter(_ c:Int) -> Int{
+        
+        if !needContinue(){
+            return c
+        }
+        
+        return counter(c + 1)
+    }
+    
+    let count = counter(0)
+    
+    finished(count)
+    
+
+}
+
+countingLoop(inputAndCheck,corrected)
+
+
+
+
+////변수에 클로저
+//var hello : () -> Void = {print("클로저")}
+//
+//
+//func myTest() -> Void{
+//    print("함수")
+//}
+//
+//
+////변수에 함수
+//var hello2 = myTest
+//
+//
+//
+//
+//
+//
+//func runClosure(_ aClosure: () -> Void){
+//    aClosure()
+//}
+//
+//runClosure(hello)
+//runClosure(hello2)
+//
+//
+//class MyClass{
+//
+//    var prop : (() -> ())!
+//
+//    func cF( _ arg : @escaping () -> ()){
+//        self.prop = arg
+//    }
+//}
